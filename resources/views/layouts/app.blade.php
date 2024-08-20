@@ -54,7 +54,8 @@
         href="{{ asset('/materialize') }}/assets/vendor/libs/datatables-buttons-bs5/buttons.bootstrap5.css" />
     <link rel="stylesheet"
         href="{{ asset('/materialize') }}/assets/vendor/libs/datatables-checkboxes-jquery/datatables.checkboxes.css" />
-    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/@form-validation/form-validation.css" />
+    <link rel="stylesheet"
+        href="{{ asset('/materialize') }}/assets/vendor/libs/@form-validation/form-validation.css" />
     <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/toastr/toastr.css" />
     <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/sweetalert2/sweetalert2.css" />
 
@@ -67,6 +68,13 @@
     <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('/materialize') }}/assets/js/config.js"></script>
+
+    <link rel="stylesheet" href="{{ asset('/assets/plugins/summernote/summernote-bs4.css') }}">
+    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/dropzone/dropzone.css" />
+    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/select2/select2.css" />
+    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/rateyo/rateyo.css" />
+
+    @vite('resources/css/custom_dropzone.css')
 
     @stack('styles')
 </head>
@@ -314,7 +322,44 @@
             toastr.warning('{{ session('warning') }}', 'Warning!') @endif
     </script>
 
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css"
+        integrity="sha512-ngQ4IGzHQ3s/Hh8kMyG4FC74wzitukRMIcTOoKT3EyzFZCILOPF0twiXOQn75eDINUfKBYmzYn2AA8DkAk8veQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="{{ asset('/assets/plugins/summernote/summernote-bs4.js') }}"></script>
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/dropzone/dropzone.js"></script>
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/select2/select2.js"></script>
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/rateyo/rateyo.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            if (document.querySelector('.full-editor')) {
+                $('.full-editor').summernote();
+            }
+
+            const select2Elements = $('.select2');
+
+            if (select2Elements.length) {
+                select2Elements.each(function() {
+                    const $this = $(this);
+                    const placeholder = $this.attr('data-placeholder') ?
+                        $this.attr('data-placeholder').replace(/_/g, ' ') :
+                        'Select an option';
+
+                    select2Focus($this);
+
+                    $this.wrap('<div class="position-relative"></div>').select2({
+                        placeholder,
+                        dropdownParent: $this.parent()
+                    });
+                });
+            }
+
+        });
+    </script>
+    @vite('resources/js/custom_dropzone.js')
+
     @stack('scripts')
-</body>
+    </body>
 
 </html>

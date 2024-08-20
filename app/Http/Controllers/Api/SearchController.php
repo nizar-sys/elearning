@@ -40,7 +40,7 @@ class SearchController extends Controller
                             continue;
                         }
                         $menus[] = [
-                            'name' => $subitem['title'],
+                            'name' => $item['title'] . ' - ' . $subitem['title'],
                             'icon' => $item['icon'],
                             'url' => route($subitem['route'])
                         ];
