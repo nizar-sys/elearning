@@ -16,8 +16,7 @@ class RoleController extends Controller
     {
         $groupedPermissions = collect();
 
-        $permissions = Permission::where('id', '>', '14')
-            ->select('id', 'name')
+        $permissions = Permission::select('id', 'name')
             ->get()
             ->pluck('id', 'name');
 

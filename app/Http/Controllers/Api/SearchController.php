@@ -32,6 +32,10 @@ class SearchController extends Controller
         $menus = collect();
         $menuWhereRole = config('console-menu'); // admin
 
+        if ($user->hasRole('Teacher')) {
+            $menuWhereRole = config('console-menu-teacher');
+        }
+
         foreach ($menuWhereRole as $menu) {
             foreach ($menu['items'] as $item) {
                 if ($item['route'] == '') {

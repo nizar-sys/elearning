@@ -15,6 +15,18 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $permissionForUsers = [
+            'user_management_user_create',
+            'user_management_user_update',
+            'user_management_user_delete',
+        ];
+
+        $this->middleware('permissions:' . implode(',', $permissionForUsers))
+        ->except(['index', 'show']);
+    }
+
     public function index(Request $request, UserDataTable $dataTable)
     {
         $roles = Role::select('id', 'name')->get();

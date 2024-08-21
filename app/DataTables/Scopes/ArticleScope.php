@@ -2,6 +2,7 @@
 
 namespace App\DataTables\Scopes;
 
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Contracts\DataTableScope;
 
 class ArticleScope implements DataTableScope
@@ -21,6 +22,8 @@ class ArticleScope implements DataTableScope
             return $query->where('created_by', $this->request->created_by);
         })->when($this->request->status, function ($query) {
             return $query->where('status', $this->request->status);
+        })->when(Auth::user()->hasRole('Teacher'), function ($query) {
+            return $query->where('created_by', Auth::id());
         });
     }
 }

@@ -23,7 +23,6 @@ class ElearningController extends Controller
     public function __construct()
     {
         $this->sharedData = [
-            'teachers' => User::select('id', 'name')->get(),
             'benefits' => Benefit::select('id', 'type')->get(),
             'elearningStatus' => ElearningStatus::asArray(),
             'categories' => Category::select('id', 'name')->get(),
@@ -35,12 +34,24 @@ class ElearningController extends Controller
     {
         return $dataTable
             ->addScope(new ElearningScope($request))
-            ->render('console.elearnings.index', $this->sharedData);
+            ->render('console.elearnings.index', $this->sharedData + [
+                'teachers' => User::select('id', 'name')
+                    ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                        return $query->where('id', auth()->user()->id);
+                    })
+                    ->get()
+            ]);
     }
 
     public function create()
     {
-        return view('console.elearnings.create', $this->sharedData);
+        return view('console.elearnings.create', $this->sharedData + [
+            'teachers' => User::select('id', 'name')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('id', auth()->user()->id);
+                })
+                ->get()
+        ]);
     }
 
     public function store(RequestStoreElearning $request)
@@ -73,7 +84,13 @@ class ElearningController extends Controller
     {
         $elearning->load('categories', 'materials');
 
-        return view('console.elearnings.edit', array_merge(['elearning' => $elearning], $this->sharedData));
+        return view('console.elearnings.edit', array_merge(['elearning' => $elearning], $this->sharedData + [
+            'teachers' => User::select('id', 'name')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('id', auth()->user()->id);
+                })
+                ->get()
+        ]));
     }
 
     public function update(RequestStoreElearning $request, Elearning $elearning)

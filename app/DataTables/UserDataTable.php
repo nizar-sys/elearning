@@ -30,7 +30,14 @@ class UserDataTable extends DataTable
             ->editColumn('role', function ($users) {
                 return $users->getRoleNames()->first();
             })
-            ->rawColumns(['action']);
+            ->editColumn('name', function ($users) {
+                if ($users->id == auth()->id()) {
+                    return $users->name . ' <span class="badge rounded-pill bg-label-primary ms-2">You</span>';
+                }
+
+                return $users->name;
+            })
+            ->rawColumns(['action', 'name']);
     }
 
     /**

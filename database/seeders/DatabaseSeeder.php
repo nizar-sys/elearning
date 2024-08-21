@@ -36,14 +36,52 @@ class DatabaseSeeder extends Seeder
             'user_management_permission_create',
             'user_management_permission_update',
             'user_management_permission_delete',
+
             'user_management_role_read',
             'user_management_role_create',
             'user_management_role_update',
             'user_management_role_delete',
+
             'user_management_user_read',
             'user_management_user_create',
             'user_management_user_update',
             'user_management_user_delete',
+
+            'Master Data',
+            'master_data_category_read',
+            'master_data_category_create',
+            'master_data_category_update',
+            'master_data_category_delete',
+
+            'master_data_article_read',
+            'master_data_article_create',
+            'master_data_article_update',
+            'master_data_article_delete',
+
+            'master_data_video_read',
+            'master_data_video_create',
+            'master_data_video_update',
+            'master_data_video_delete',
+
+            'master_data_benefit_read',
+            'master_data_benefit_create',
+            'master_data_benefit_update',
+            'master_data_benefit_delete',
+
+            'master_data_material_read',
+            'master_data_material_create',
+            'master_data_material_update',
+            'master_data_material_delete',
+
+            'master_data_elearning_read',
+            'master_data_elearning_create',
+            'master_data_elearning_update',
+            'master_data_elearning_delete',
+
+            'master_data_review_read',
+            'master_data_review_create',
+            'master_data_review_update',
+            'master_data_review_delete',
         ];
 
         $defaultPermissions = array_map(function ($permission) {

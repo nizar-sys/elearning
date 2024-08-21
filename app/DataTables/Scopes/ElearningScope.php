@@ -29,6 +29,8 @@ class ElearningScope implements DataTableScope
             $query->whereHas('materials', function ($query) {
                 $query->where('material_id', $this->request->material_id);
             });
+        })->when(auth()->user()->hasRole('Teacher'), function ($query) {
+            $query->where('teacher_id', auth()->user()->id);
         });
     }
 }
