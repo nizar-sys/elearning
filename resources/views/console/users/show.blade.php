@@ -13,12 +13,14 @@
                                 <i class="ri-group-line me-2"></i>Account
                             </a>
                         </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="security-tab" data-bs-toggle="pill" href="#security" role="tab"
-                                aria-controls="security" aria-selected="false">
-                                <i class="ri-lock-line me-2"></i>Security
-                            </a>
-                        </li>
+                        @if (Auth::user()->hasRole('Administrator') || $user->id == Auth::id())
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link" id="security-tab" data-bs-toggle="pill" href="#security" role="tab"
+                                    aria-controls="security" aria-selected="false">
+                                    <i class="ri-lock-line me-2"></i>Security
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </div>
                 <div class="tab-content" id="myTabContent">
@@ -53,19 +55,22 @@
                                     <div class="d-flex align-items-start align-items-sm-center gap-6">
                                         <img src="{{ $user->avatarUrl }}" alt="user-avatar"
                                             class="d-block w-px-100 h-px-100 rounded-4" id="uploadedAvatar" />
-                                        <div class="button-wrapper">
-                                            <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
-                                                <span class="d-none d-sm-block">Upload new photo</span>
-                                                <i class="ri-upload-2-line d-block d-sm-none"></i>
-                                                <input type="file" id="upload" class="account-file-input" hidden
-                                                    accept="image/png, image/jpeg" name="file_avatar" />
-                                            </label>
-                                            <button type="button" class="btn btn-outline-danger account-image-reset mb-4">
-                                                <i class="ri-refresh-line d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block">Reset</span>
-                                            </button>
-                                            <div>Allowed JPG, GIF or PNG. Max size of 800K</div>
-                                        </div>
+                                        @if (Auth::user()->hasRole('Administrator') || $user->id == Auth::id())
+                                            <div class="button-wrapper">
+                                                <label for="upload" class="btn btn-primary me-3 mb-4" tabindex="0">
+                                                    <span class="d-none d-sm-block">Upload new photo</span>
+                                                    <i class="ri-upload-2-line d-block d-sm-none"></i>
+                                                    <input type="file" id="upload" class="account-file-input" hidden
+                                                        accept="image/png, image/jpeg" name="file_avatar" />
+                                                </label>
+                                                <button type="button"
+                                                    class="btn btn-outline-danger account-image-reset mb-4">
+                                                    <i class="ri-refresh-line d-block d-sm-none"></i>
+                                                    <span class="d-none d-sm-block">Reset</span>
+                                                </button>
+                                                <div>Allowed JPG, GIF or PNG. Max size of 800K</div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="card-body pt-0">
@@ -74,7 +79,7 @@
                                         <div class="col-md-6">
                                             <div class="form-floating form-floating-outline">
                                                 <input class="form-control" type="text" id="name" name="name"
-                                                    value="{{ old('name', $user->name) }}" autofocus />
+                                                    value="{{ old('name', $user->name) }}" autofocus disabled/>
                                                 <label for="name"> Name</label>
                                             </div>
                                         </div>
@@ -83,7 +88,7 @@
                                             <div class="form-floating form-floating-outline">
                                                 <input class="form-control" type="text" id="email" name="email"
                                                     value="{{ old('email', $user->email) }}"
-                                                    placeholder="{{ old('email', $user->email) }}" />
+                                                    placeholder="{{ old('email', $user->email) }}" disabled/>
                                                 <label for="email">E-mail</label>
                                             </div>
                                         </div>
@@ -93,7 +98,7 @@
                                                     class="form-select @error('role_id')
                                                     is-invalid
                                                 @enderror"
-                                                    name="role_id">
+                                                    name="role_id" disabled>
                                                     <option value="">Select Role</option>
                                                     @foreach ($roles as $role)
                                                         <option value="{{ $role->id }}"
@@ -109,9 +114,12 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="mt-6">
-                                        <button type="submit" class="btn btn-primary me-3">Save changes</button>
-                                        <a href="{{ route('users.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                                        @if (Auth::user()->hasRole('Administrator') || $user->id == Auth::id())
+                                            <button type="submit" class="btn btn-primary me-3">Save changes</button>
+                                        @endif
+                                        <a href="{{ route('users.index') }}" class="btn btn-outline-secondary">Back</a>
                                     </div>
                                 </div>
                             </form>
@@ -119,61 +127,66 @@
                     </div>
 
                     <!-- Security Tab Content -->
-                    <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
-                        <div class="card mb-6">
-                            <h5 class="card-header">Change Password</h5>
-                            <div class="card-body pt-1">
-                                <form id="formUpdatePassword" action="{{ route('password.update') }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+                    @if (Auth::user()->hasRole('Administrator') || $user->id == Auth::id())
+                        <div class="tab-pane fade" id="security" role="tabpanel" aria-labelledby="security-tab">
+                            <div class="card mb-6">
+                                <h5 class="card-header">Change Password</h5>
+                                <div class="card-body pt-1">
+                                    <form id="formUpdatePassword" action="{{ route('password.update') }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="hidden" name="user_id" value="{{ $user->id }}">
 
-                                    <div class="row">
-                                        <div class="mb-5 col-md-6 form-password-toggle">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input class="form-control" type="password" name="current_password"
-                                                        id="current_password" placeholder="{!! passwordPlainText() !!}" />
-                                                    <label for="current_password">Current Password</label>
+                                        <div class="row">
+                                            <div class="mb-5 col-md-6 form-password-toggle">
+                                                <div class="input-group input-group-merge">
+                                                    <div class="form-floating form-floating-outline">
+                                                        <input class="form-control" type="password"
+                                                            name="current_password" id="current_password"
+                                                            placeholder="{!! passwordPlainText() !!}" />
+                                                        <label for="current_password">Current Password</label>
+                                                    </div>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="ri-eye-off-line"></i></span>
                                                 </div>
-                                                <span class="input-group-text cursor-pointer"><i
-                                                        class="ri-eye-off-line"></i></span>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row g-5 mb-6">
-                                        <div class="col-md-6 form-password-toggle">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input class="form-control" type="password" id="password"
-                                                        name="password" placeholder="{!! passwordPlainText() !!}" />
-                                                    <label for="password">New Password</label>
+                                        <div class="row g-5 mb-6">
+                                            <div class="col-md-6 form-password-toggle">
+                                                <div class="input-group input-group-merge">
+                                                    <div class="form-floating form-floating-outline">
+                                                        <input class="form-control" type="password" id="password"
+                                                            name="password" placeholder="{!! passwordPlainText() !!}" />
+                                                        <label for="password">New Password</label>
+                                                    </div>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="ri-eye-off-line"></i></span>
                                                 </div>
-                                                <span class="input-group-text cursor-pointer"><i
-                                                        class="ri-eye-off-line"></i></span>
+                                            </div>
+                                            <div class="col-md-6 form-password-toggle">
+                                                <div class="input-group input-group-merge">
+                                                    <div class="form-floating form-floating-outline">
+                                                        <input class="form-control" type="password"
+                                                            id="password_confirmation" name="password_confirmation"
+                                                            placeholder="{!! passwordPlainText() !!}" />
+                                                        <label for="password_confirmation">Confirm New Password</label>
+                                                    </div>
+                                                    <span class="input-group-text cursor-pointer"><i
+                                                            class="ri-eye-off-line"></i></span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 form-password-toggle">
-                                            <div class="input-group input-group-merge">
-                                                <div class="form-floating form-floating-outline">
-                                                    <input class="form-control" type="password"
-                                                        id="password_confirmation" name="password_confirmation"
-                                                        placeholder="{!! passwordPlainText() !!}" />
-                                                    <label for="password_confirmation">Confirm New Password</label>
-                                                </div>
-                                                <span class="input-group-text cursor-pointer"><i
-                                                        class="ri-eye-off-line"></i></span>
-                                            </div>
+                                        <div class="mt-6">
+                                            <button type="submit" class="btn btn-primary me-3">Save changes</button>
+                                            <a href="{{ route('users.index') }}"
+                                                class="btn btn-outline-secondary">Cancel</a>
                                         </div>
-                                    </div>
-                                    <div class="mt-6">
-                                        <button type="submit" class="btn btn-primary me-3">Save changes</button>
-                                        <a href="{{ route('users.index') }}" class="btn btn-outline-secondary">Cancel</a>
-                                    </div>
-                                </form>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -183,6 +196,7 @@
 @push('scripts')
     <script>
         const defaultImagePath = "{{ $user->avatarUrl }}";
+        const canEdit = "{{ Auth::user()->hasRole('Administrator') || $user->id == Auth::id() }}";
     </script>
     @vite('resources/js/console/users/show_script.js')
 @endpush

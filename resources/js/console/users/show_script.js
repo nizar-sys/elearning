@@ -134,19 +134,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const resetButton = document.querySelector(".account-image-reset");
     const avatarImage = document.getElementById("uploadedAvatar");
 
-    uploadInput.addEventListener("change", function (event) {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                avatarImage.src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-        }
-    });
+    if (uploadInput) {
+        uploadInput.addEventListener("change", function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarImage.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
 
-    resetButton.addEventListener("click", function () {
-        avatarImage.src = defaultImagePath;
-        uploadInput.value = "";
-    });
+        resetButton.addEventListener("click", function () {
+            avatarImage.src = defaultImagePath;
+            uploadInput.value = "";
+        });
+    }
+
+    if (canEdit) {
+        document
+            .querySelectorAll(
+                "#formAccountSettings input, #formAccountSettings select"
+            )
+            .forEach((el) => {
+                el.removeAttribute("disabled");
+            });
+    }
 });

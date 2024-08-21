@@ -7,15 +7,18 @@
 
             <div class="card-header border-bottom">
                 <h5 class="card-title mb-0">Filters</h5>
-                <div class="d-flex justify-content-between align-items-center row gx-5 pt-4 gap-5 gap-md-0">
-                    <div class="col-md-4 teacher_id_filter">
-                        <select id="teacher_id_filter" class="form-select" data-filter="teacher_id" name="teacher_id_filter">
-                            <option value="">All Teachers</option>
-                            @foreach ($teachers as $teacher)
-                                <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="d-flex justify-content-start align-items-center row gx-5 pt-4 gap-5 gap-md-0">
+                    @if (Auth::user()->hasRole('Administrator'))
+                        <div class="col-md-4 teacher_id_filter">
+                            <select id="teacher_id_filter" class="form-select" data-filter="teacher_id"
+                                name="teacher_id_filter">
+                                <option value="">All Teachers</option>
+                                @foreach ($teachers as $teacher)
+                                    <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endif
                     <div class="col-md-4 benefit_id_filter">
                         <select id="benefit_id_filter" class="form-select" data-filter="benefit_id"
                             name="benefit_id_filter">
@@ -38,7 +41,8 @@
                 </div>
                 <div class="d-flex justify-content-start align-items-center row gx-5 pt-4 gap-5 gap-md-0">
                     <div class="col-md-4 category_id_filter">
-                        <select id="category_id_filter" class="select2 form-select" data-placeholder="All Categories" name="category_id_filter" multiple>
+                        <select id="category_id_filter" class="select2 form-select" data-placeholder="All Categories"
+                            name="category_id_filter" multiple>
                             <option value="">All Categories</option>
                             @foreach ($categories as $category)
                                 <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -46,7 +50,8 @@
                         </select>
                     </div>
                     <div class="col-md-4 material_id_filter">
-                        <select id="material_id_filter" class="select2 form-select" data-placeholder="All Materials" name="material_id_filter" multiple>
+                        <select id="material_id_filter" class="select2 form-select" data-placeholder="All Materials"
+                            name="material_id_filter" multiple>
                             <option value="">All Materials</option>
                             @foreach ($materials as $material)
                                 <option value="{{ $material->id }}">{{ $material->title }}</option>

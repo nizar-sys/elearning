@@ -1,9 +1,13 @@
 <ul class="menu-inner py-1">
     @php
-        $menuWhereRole = config('console-menu'); // admin
+        $menus = config('console-menu'); // admin
+
+        if (auth()->user()->hasRole('Teacher')) {
+            $menus = config('console-menu-teacher');
+        }
     @endphp
 
-    @foreach ($menuWhereRole as $menu)
+    @foreach ($menus as $menu)
         @if (isset($menu['header']))
             <li class="menu-header">
                 <span class="menu-header-text" data-i18n="{{ $menu['header'] }}">{{ $menu['header'] }}</span>

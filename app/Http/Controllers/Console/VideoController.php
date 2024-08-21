@@ -21,7 +21,6 @@ class VideoController extends Controller
     {
         // Inisialisasi data yang digunakan secara berulang
         $this->sharedData = [
-            'creators' => User::select('id', 'name')->get(),
             'categories' => Category::select('id', 'name')->get(),
         ];
     }
@@ -31,13 +30,25 @@ class VideoController extends Controller
         // Render dengan data yang telah diambil di constructor
         return $dataTable
             ->addScope(new VideoScope($request))
-            ->render('console.videos.index', $this->sharedData);
+            ->render('console.videos.index', $this->sharedData + [
+                'creators' => User::select('id', 'name')
+                    ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                        return $query->where('id', auth()->user()->id);
+                    })
+                    ->get(),
+            ]);
     }
 
     public function create()
     {
         // Kembalikan view dengan data yang telah disiapkan
-        return view('console.videos.create', $this->sharedData);
+        return view('console.videos.create', $this->sharedData + [
+            'creators' => User::select('id', 'name')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('id', auth()->user()->id);
+                })
+                ->get(),
+        ]);
     }
 
     public function store(RequestStoreVideo $request)
@@ -71,7 +82,13 @@ class VideoController extends Controller
         // Eager loading categories untuk menghindari N+1 query problem
         $video->load('categories');
 
-        return view('console.videos.edit', array_merge(['video' => $video], $this->sharedData));
+        return view('console.videos.edit', array_merge(['video' => $video], $this->sharedData + [
+            'creators' => User::select('id', 'name')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('id', auth()->user()->id);
+                })
+                ->get(),
+        ]));
     }
 
     public function update(RequestStoreVideo $request, Video $video)

@@ -44,22 +44,23 @@ Route::prefix('console')->middleware(['auth', 'verified'])->group(function () {
     Route::middleware('role:Administrator')->group(function () {
         Route::resource('permissions', PermissionController::class);
         Route::resource('roles', RoleController::class);
-        Route::patch('/users/profile/{id}', [UserController::class, 'updateDetail'])->name('users.profile.update');
-        Route::resource('users', UserController::class);
-
-        // global categories
-        Route::resource('categories', CategoryController::class);
-
-        // articles
-        Route::resource('articles', ArticleController::class);
-
-        // videos
-        Route::resource('videos', VideoController::class);
-
-        // elearnings
-        Route::resource('benefits', BenefitController::class);
-        Route::resource('materials', MaterialController::class);
-        Route::resource('elearnings', ElearningController::class);
-        Route::resource('reviews', ReviewController::class);
     });
+
+    Route::patch('/users/profile/{id}', [UserController::class, 'updateDetail'])->name('users.profile.update');
+    Route::resource('users', UserController::class);
+
+    // global categories
+    Route::resource('categories', CategoryController::class);
+
+    // articles
+    Route::resource('articles', ArticleController::class);
+
+    // videos
+    Route::resource('videos', VideoController::class);
+
+    // elearnings
+    Route::resource('benefits', BenefitController::class);
+    Route::resource('materials', MaterialController::class);
+    Route::resource('elearnings', ElearningController::class);
+    Route::resource('reviews', ReviewController::class);
 });

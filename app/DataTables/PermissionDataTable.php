@@ -32,8 +32,7 @@ class PermissionDataTable extends DataTable
      */
     public function query(ModelsPermission $model): QueryBuilder
     {
-        return $model->newQuery()
-        ->where('id', '>', 14); // permssion default tidak di tampilkan
+        return $model->newQuery(); // permssion default tidak di tampilkan
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Models\Article;
 use App\Models\Category;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -30,7 +31,11 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::select('id', 'name')->get();
-        $creators = User::select('id', 'name')->get();
+        $creators = User::select('id', 'name')
+        ->when(Auth::user()->hasRole('Teacher'), function ($query) {
+            return $query->where('id', Auth::id());
+        })
+        ->get();
         $articleStatus = ArticleStatus::getValues();
 
         return view('console.articles.create', compact('categories', 'creators', 'articleStatus'));
@@ -64,7 +69,11 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $categories = Category::select('id', 'name')->get();
-        $creators = User::select('id', 'name')->get();
+        $creators = User::select('id', 'name')
+        ->when(Auth::user()->hasRole('Teacher'), function ($query) {
+            return $query->where('id', Auth::id());
+        })
+        ->get();
         $articleStatus = ArticleStatus::getValues();
 
         return view('console.articles.edit', compact('article', 'categories', 'creators', 'articleStatus'));

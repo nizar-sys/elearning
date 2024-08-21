@@ -20,9 +20,16 @@ class ReviewController extends Controller
     public function __construct()
     {
         // Inisialisasi data yang digunakan secara berulang
-        $this->sharedData = [
-            'elearnings' => Elearning::select('id', 'title')->get(),
+        $this->sharedData = [];
+
+        $permissionForReviews = [
+            'master_data_review_create',
+            'master_data_review_update',
+            'master_data_review_delete',
         ];
+
+        $this->middleware('permissions:' . implode(',', $permissionForReviews))
+            ->except(['index']);
     }
 
     public function index(Request $request, ElearningReviewDataTable $dataTable)
@@ -31,12 +38,24 @@ class ReviewController extends Controller
 
         return $dataTable
             ->addScope(new ElearningReviewScope($request))
-            ->render('console.reviews.index', compact('reviewers') + $this->sharedData);
+            ->render('console.reviews.index', compact('reviewers') + $this->sharedData + [
+                'elearnings' => Elearning::select('id', 'title')
+                    ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                        return $query->where('teacher_id', auth()->user()->id);
+                    })
+                    ->get()
+            ]);
     }
 
     public function create()
     {
-        return view('console.reviews.create', $this->sharedData);
+        return view('console.reviews.create', $this->sharedData + [
+            'elearnings' => Elearning::select('id', 'title')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('teacher_id', auth()->user()->id);
+                })
+                ->get()
+        ]);
     }
 
     public function store(RequestStoreRating $request)
@@ -66,7 +85,13 @@ class ReviewController extends Controller
 
     public function edit(ElearningReview $review)
     {
-        return view('console.reviews.edit', compact('review') + $this->sharedData);
+        return view('console.reviews.edit', compact('review') + $this->sharedData + [
+            'elearnings' => Elearning::select('id', 'title')
+                ->when(auth()->user()->hasRole('Teacher'), function ($query) {
+                    return $query->where('teacher_id', auth()->user()->id);
+                })
+                ->get()
+        ]);
     }
 
     public function update(RequestStoreRating $request, ElearningReview $review)
