@@ -70,7 +70,7 @@
                                     </div>
                                     <div class="mt-6">
                                         <button type="submit" class="btn btn-primary me-3">Save changes</button>
-                                        <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                                        <a href="{{ Auth::user()->hasRole('Student') ? route('student.dashboard') : route('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
                                     </div>
                                 </div>
                             </form>
@@ -128,7 +128,7 @@
                                     </div>
                                     <div class="mt-6">
                                         <button type="submit" class="btn btn-primary me-3">Save changes</button>
-                                        <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
+                                        <a href="{{ Auth::user()->hasRole('Student') ? route('student.dashboard') : route('dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
                                     </div>
                                 </form>
                             </div>

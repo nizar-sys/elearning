@@ -86,7 +86,7 @@
             <!-- Menu -->
             <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
                 <div class="app-brand demo">
-                    <a href="{{ url('/dashboard') }}" class="app-brand-link">
+                    <a href="{{ Auth::user()->hasRole('Student') ? route('student.dashboard') : route('dashboard') }}" class="app-brand-link">
                         <span class="app-brand-logo demo">
                             <span style="color: var(--bs-primary)">
                                 <svg width="268" height="150" viewBox="0 0 38 20" fill="none"
@@ -194,7 +194,7 @@
                                                 <div class="flex-grow-1">
                                                     <span
                                                         class="fw-medium d-block small">{{ $user ? $user->name : 'John Doe' }}</span>
-                                                    <small class="text-muted">Admin</small>
+                                                    <small class="text-muted">{{ $user ? $user->roles?->first()?->name : 'Alonami' }}</small>
                                                 </div>
                                             </div>
                                         </a>

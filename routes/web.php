@@ -12,6 +12,10 @@ use App\Http\Controllers\Console\UserController;
 use App\Http\Controllers\Console\VideoController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Student\ArticleController as StudentArticleController;
+use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
+use App\Http\Controllers\Student\ElearningController as StudentElearningController;
+use App\Http\Controllers\Student\VideoController as StudentVideoController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,8 +33,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -39,7 +41,8 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::prefix('console')->middleware(['auth', 'verified'])->group(function () {
+Route::prefix('console')->middleware(['auth', 'verified', 'role:Administrator,Teacher'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('role:Administrator')->group(function () {
         Route::resource('permissions', PermissionController::class);
@@ -63,4 +66,21 @@ Route::prefix('console')->middleware(['auth', 'verified'])->group(function () {
     Route::resource('materials', MaterialController::class);
     Route::resource('elearnings', ElearningController::class);
     Route::resource('reviews', ReviewController::class);
+});
+
+Route::prefix('student')->name('student.')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [StudentDashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+
+    // elearnings
+    Route::get('/elearnings', [StudentElearningController::class, 'index'])->name('elearnings.index');
+    Route::get('/elearnings/{slug}', [StudentElearningController::class, 'show'])->name('elearnings.show');
+    Route::post('/elearning/{id}/review', [StudentElearningController::class, 'storeReview'])->name('elearnings.review.store');
+
+    // Article Routes
+    Route::get('/articles', [StudentArticleController::class, 'index'])->name('articles.index');
+    Route::get('/articles/{slug}', [StudentArticleController::class, 'show'])->name('articles.show');
+
+    // Videos Routes
+    Route::get('/videos', [StudentVideoController::class, 'index'])->name('videos.index');
+    Route::get('/videos/{slug}', [StudentVideoController::class, 'show'])->name('videos.show');
 });

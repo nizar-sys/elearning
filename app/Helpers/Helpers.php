@@ -94,3 +94,11 @@ if (!function_exists('passwordPlainText')) {
         return '&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;';
     }
 }
+
+if (!function_exists('getYouTubeVideoId')) {
+    function getYouTubeVideoId($url)
+    {
+        preg_match('/(?:https?:\/\/)?(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $url, $matches);
+        return $matches[1] ?? null;
+    }
+}
