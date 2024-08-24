@@ -96,7 +96,7 @@
                                     <tr>
                                         <td>{{ $elearning->title }}</td>
                                         <td>{{ $elearning->teacher->name }}</td>
-                                        <td>{{ $elearning->duration }} minutes</td>
+                                        <td>{{ $elearning->duration }}</td>
                                         <td>{{ ucfirst($elearning->status) }}</td>
                                     </tr>
                                 @endforeach

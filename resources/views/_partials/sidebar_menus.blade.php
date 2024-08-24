@@ -4,6 +4,8 @@
 
         if (auth()->user()->hasRole('Teacher')) {
             $menus = config('console-menu-teacher');
+        } elseif (auth()->user()->hasRole('Student')) {
+            $menus = config('menu-student');
         }
     @endphp
 

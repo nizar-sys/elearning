@@ -40,4 +40,9 @@ class Elearning extends Model
     {
         return $this->belongsToMany(Material::class, 'elearning_materials');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ElearningReview::class);
+    }
 }

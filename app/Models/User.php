@@ -62,4 +62,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(ElearningReview::class, 'reviewer_id');
     }
+
+    public function elearnings()
+    {
+        return $this->hasMany(Elearning::class, 'teacher_id');
+    }
+
+    public function articles()
+    {
+        return $this->hasMany(Article::class, 'created_by');
+    }
 }

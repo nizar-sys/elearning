@@ -22,4 +22,9 @@ class Category extends Model
     {
         return $this->belongsToMany(Elearning::class, 'elearning_categories', 'category_id', 'elearning_id');
     }
+
+    public function articles()
+    {
+        return $this->belongsToMany(Article::class, 'article_categories', 'category_id', 'article_id');
+    }
 }

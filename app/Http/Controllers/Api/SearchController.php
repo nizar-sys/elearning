@@ -34,6 +34,8 @@ class SearchController extends Controller
 
         if ($user->hasRole('Teacher')) {
             $menuWhereRole = config('console-menu-teacher');
+        } elseif ($user->hasRole('Student')) {
+            $menuWhereRole = config('menu-student');
         }
 
         foreach ($menuWhereRole as $menu) {
