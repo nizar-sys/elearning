@@ -44,7 +44,7 @@ Route::prefix('console')->middleware(['auth', 'verified', 'role:Administrator,Te
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('role:Administrator')->group(function () {
-        Route::resource('permissions', PermissionController::class);
+        // Route::resource('permissions', PermissionController::class);
         Route::resource('roles', RoleController::class);
     });
 

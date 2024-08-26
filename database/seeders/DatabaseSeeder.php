@@ -16,10 +16,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $corePermission = Permission::create(['name' => 'all_permissions']);
 
         $adminRole = Role::create(['name' => 'Administrator']);
-        $adminRole->givePermissionTo($corePermission);
 
         $adminUser = User::create([
             'name' => 'Administrator',
@@ -30,69 +28,26 @@ class DatabaseSeeder extends Seeder
 
         $adminUser->assignRole($adminRole);
 
-        $permissions = [
-            'User Management',
-            'user_management_permission_read',
-            'user_management_permission_create',
-            'user_management_permission_update',
-            'user_management_permission_delete',
+        $teacherRole = Role::create(['name' => 'Teacher']);
 
-            'user_management_role_read',
-            'user_management_role_create',
-            'user_management_role_update',
-            'user_management_role_delete',
+        $teacher = User::create([
+            'name' => 'Teacher',
+            'email' => 'teacher@mail.com',
+            'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+        ]);
 
-            'user_management_user_read',
-            'user_management_user_create',
-            'user_management_user_update',
-            'user_management_user_delete',
+        $teacher->assignRole($teacherRole);
 
-            'Master Data',
-            'master_data_category_read',
-            'master_data_category_create',
-            'master_data_category_update',
-            'master_data_category_delete',
+        $studentRole = Role::create(['name' => 'Student']);
 
-            'master_data_article_read',
-            'master_data_article_create',
-            'master_data_article_update',
-            'master_data_article_delete',
+        $student = User::create([
+            'name' => 'Student',
+            'email' => 'student@mail.com',
+            'password' => bcrypt('password'),
+            'email_verified_at' => now(),
+        ]);
 
-            'master_data_video_read',
-            'master_data_video_create',
-            'master_data_video_update',
-            'master_data_video_delete',
-
-            'master_data_benefit_read',
-            'master_data_benefit_create',
-            'master_data_benefit_update',
-            'master_data_benefit_delete',
-
-            'master_data_material_read',
-            'master_data_material_create',
-            'master_data_material_update',
-            'master_data_material_delete',
-
-            'master_data_elearning_read',
-            'master_data_elearning_create',
-            'master_data_elearning_update',
-            'master_data_elearning_delete',
-
-            'master_data_review_read',
-            'master_data_review_create',
-            'master_data_review_update',
-            'master_data_review_delete',
-        ];
-
-        $defaultPermissions = array_map(function ($permission) {
-            return [
-                'name' => $permission,
-                'guard_name' => 'web',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        }, $permissions);
-
-        Permission::insert($defaultPermissions);
+        $student->assignRole($studentRole);
     }
 }
