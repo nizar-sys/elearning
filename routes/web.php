@@ -11,6 +11,7 @@ use App\Http\Controllers\Console\RoleController;
 use App\Http\Controllers\Console\UserController;
 use App\Http\Controllers\Console\VideoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\ArticleController as StudentArticleController;
 use App\Http\Controllers\Student\DashboardController as StudentDashboardController;
@@ -29,9 +30,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
