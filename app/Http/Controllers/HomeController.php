@@ -63,15 +63,16 @@ class HomeController extends Controller
 
     public function detailCourse($courseId)
     {
-        $elearning = Elearning::findOrFail($courseId);
+        $elearning = Elearning::with(['categories', 'materials', 'teacher', 'reviews.reviewer', 'benefit'])
+            ->findOrFail($courseId);
+
         $materials = $elearning->materials;
-        $material = $materials->first();
-        $totalMaterials = $elearning->materials->count();
-        $reviews = $elearning->reviews;
+        $material = $materials->first(); // Material pertama sebagai default
+        $totalMaterials = $materials->count();
+        $reviews = $elearning->reviews()->latest()->get(); // Sortir review langsung di query
 
         return view('user.detail-course', compact('elearning', 'materials', 'totalMaterials', 'material', 'reviews'));
     }
-
 
     public function detailArticle($articleId)
     {

@@ -33,7 +33,7 @@
                             <div class="swiper-slide">
                                 <div class="card mb-3" data-aos="zoom-in" data-aos-delay="100">
                                     <div class="card-img">
-                                        <iframe width="100%" height="315" src="{{ $video->video }}" frameborder="0"
+                                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{ getYouTubeVideoId($video->video) }}" frameborder="0"
                                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen>
                                         </iframe>
@@ -110,6 +110,12 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+            const getYouTubeVideoId = (url) => {
+                const match = url.match(
+                    /(?:youtu.be\/|v\/|embed\/|watch\?v=)([^#\&\?]*).*/
+                );
+                return match ? match[1] : null;
+            };
 
             document.querySelectorAll('.video-title').forEach(function(element) {
                 element.addEventListener('click', function() {
@@ -118,7 +124,7 @@
                     var videoTitle = this.innerText;
 
                     // Update modal content
-                    document.getElementById('videoFrame').src = videoUrl;
+                    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${getYouTubeVideoId(videoUrl)}`;
                     document.getElementById('videoDescription').innerHTML = videoDescription;
                     document.getElementById('videoModalLabel').innerText = videoTitle;
 

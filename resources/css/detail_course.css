@@ -1,0 +1,206 @@
+.course-item {
+    transition: background-color 0.3s ease;
+}
+
+.course-item:hover,
+.course-item.active {
+    background-color: #8B93FF;
+    color: #fff;
+}
+
+.course-item .play-icon {
+    font-size: 1.5rem;
+}
+
+.course-item .material-capsule {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+}
+
+.course-category {
+    display: inline-block;
+    padding: 5px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    background-color: #8B93FF;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
+
+.instructor-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.teacher-img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border: 3px solid #007bff;
+}
+
+.teacher-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0;
+    color: #333;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+#materials-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.benefits-section {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.benefits-section .list-group-item {
+    border: none;
+    padding: 10px 15px;
+}
+
+.benefits-section i {
+    font-size: 1.2rem;
+}
+
+.review-section {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    padding: 1rem;
+    margin-top: 2rem;
+}
+
+.review-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.review-item {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.review-rating {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.review-text {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 0.5rem;
+}
+
+.review-author {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.form-title {
+    font-size: 1.125rem;
+    margin-bottom: 1rem;
+    font-weight: bold;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-control {
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004085;
+}
+
+.scrollable-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.review-item {
+    background-color: #ffffff;
+    border: 1px solid #dcdcdc;
+    border-radius: 5px;
+    padding: 1rem;
+}
+
+.review-rating {
+    font-size: 1rem;
+    color: #333;
+    font-weight: bold;
+}
+
+.review-text {
+    font-size: 0.875rem;
+    color: #555;
+    margin-top: 0.5rem;
+}
+
+.review-author {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 0.5rem;
+}
+
+.basic-ratings {
+    display: flex;
+    direction: row-reverse;
+    font-size: 2rem;
+    color: #ffd700;
+    cursor: pointer;
+}
+
+.basic-ratings input {
+    display: none;
+}
+
+.basic-ratings label {
+    color: #e0e0e0;
+    cursor: pointer;
+    position: relative;
+}
+
+.basic-ratings label::before {
+    content: "\2605";
+}
+
+.basic-ratings input:checked~label {
+    color: #ffd700;
+}
+
+.basic-ratings input:checked~label~input:checked~label {
+    color: #ffd700;
+}
+
+.basic-ratings input:focus~label {
+    color: #ffeb3b;
+}

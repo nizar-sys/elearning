@@ -31,8 +31,10 @@
     <link href="{{ asset('/mentor') }}/assets/vendor/aos/aos.css" rel="stylesheet">
     <link href="{{ asset('/mentor') }}/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="{{ asset('/mentor') }}/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/fonts/remixicon/remixicon.css" />
 
     <link href="{{ asset('/mentor') }}/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/materialize') }}/assets/vendor/libs/rateyo/rateyo.css" />
 
     @stack('css')
 </head>
@@ -104,6 +106,8 @@
     <div id="preloader"></div>
 
     <!-- Vendor JS Files -->
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/popper/popper.js"></script>
     <script src="{{ asset('/mentor') }}/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('/mentor') }}/assets/vendor/php-email-form/validate.js"></script>
     <script src="{{ asset('/mentor') }}/assets/vendor/aos/aos.js"></script>
@@ -114,6 +118,7 @@
     <!-- Main JS File -->
     <script src="{{ asset('/mentor') }}/assets/js/main.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <script src="{{ asset('/materialize') }}/assets/vendor/libs/rateyo/rateyo.js"></script>
     @stack('scripts')
 </body>
 

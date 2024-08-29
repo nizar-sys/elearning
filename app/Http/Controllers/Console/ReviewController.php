@@ -21,15 +21,6 @@ class ReviewController extends Controller
     {
         // Inisialisasi data yang digunakan secara berulang
         $this->sharedData = [];
-
-        $permissionForReviews = [
-            'master_data_review_create',
-            'master_data_review_update',
-            'master_data_review_delete',
-        ];
-
-        $this->middleware('permissions:' . implode(',', $permissionForReviews))
-            ->except(['index']);
     }
 
     public function index(Request $request, ElearningReviewDataTable $dataTable)

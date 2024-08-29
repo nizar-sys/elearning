@@ -2,145 +2,7 @@
 @section('title', 'Detail Course')
 
 @push('css')
-    <style>
-        .course-item {
-            transition: background-color 0.3s ease;
-        }
-
-        .course-item:hover {
-            background-color: #8B93FF;
-            color: #fff;
-        }
-
-        .course-item.active {
-            background-color: #8B93FF;
-        }
-
-        .course-item .play-icon {
-            font-size: 1.5rem;
-        }
-
-        .course-item .material-capsule {
-            flex-grow: 1;
-            display: flex;
-            align-items: center;
-        }
-
-        .course-item span {
-            display: flex;
-            align-items: center;
-        }
-
-        .course-category {
-            display: inline-block;
-            padding: 5px 15px;
-            margin: 5px;
-            border-radius: 20px;
-            background-color: #8B93FF;
-            color: white;
-            font-size: 14px;
-            text-align: center;
-        }
-
-        .instructor-section {
-            background-color: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .material-font {
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .instructor-profile {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .teacher-img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border: 3px solid #007bff;
-        }
-
-        .instructor-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .teacher-name {
-            font-size: 20px;
-            font-weight: bold;
-            margin: 0;
-            color: #333;
-        }
-
-        .section-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-            font-weight: bold;
-            text-align: center;
-        }
-
-        .swiper-container {
-            width: 100%;
-            height: auto;
-        }
-
-        .swiper-slide {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #ffffff;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            margin: 0 10px;
-        }
-
-        .review-item p {
-            margin: 0;
-            font-size: 16px;
-            color: #333;
-            text-align: center;
-        }
-        
-        #materials-list {
-            max-height: 400px;
-            overflow-y: auto;
-        }
-
-        .benefits-section {
-            background-color: #f9f9f9;
-            padding: 20px;
-            border-radius: 8px;
-        }
-
-        .benefits-section .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .benefits-section ul.list-group {
-            list-style-type: none;
-            padding-left: 0;
-        }
-
-        .benefits-section ul.list-group-item {
-            border: none;
-            padding: 10px 15px;
-        }
-
-        .benefits-section i {
-            font-size: 1.2rem;
-        }
-    </style>
+    @vite('resources/css/detail_course.css')
 @endpush
 
 @section('content')
@@ -150,7 +12,6 @@
                 <!-- Course Header -->
                 <div class="course-header d-flex flex-column align-items-center text-center">
                     <h1 class="course-title">{{ $elearning->title }}</h1>
-
                     <div class="d-flex flex-wrap justify-content-center">
                         @foreach ($elearning->categories as $category)
                             <span class="course-category capsule">{{ $category->name }}</span>
@@ -162,9 +23,18 @@
                 <div class="row mt-5">
                     <!-- Video Section -->
                     <div class="col-lg-8">
-                        <div class="video-container"
+                        <!-- Video Thumbnail -->
+                        <div id="video-thumbnail" class="video-container"
                             style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0;">
-                            <iframe id="course-video" class="img-fluid w-100" src="{{ $material->video }}" frameborder="0"
+                            <img src="{{ $elearning->thumbnail }}" class="img-fluid w-100 position-absolute"
+                                style="top: 0; left: 0; width: 100%; height: 100%; object-fit: cover;"
+                                alt="Course Thumbnail">
+                        </div>
+
+                        <!-- Video Player (Hidden Initially) -->
+                        <div id="video-player-container" class="video-container d-none"
+                            style="position: relative; width: 100%; padding-bottom: 56.25%; height: 0;">
+                            <iframe id="course-video" class="img-fluid w-100" src="" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
                             </iframe>
@@ -173,8 +43,10 @@
                         <!-- Material Detail -->
                         <div id="material-detail" class="instructor-section mt-4">
                             <div class="card-body">
-                                <h4 class="material-title">{{ $material->title }}</h4>
-                                <p class="material-description"></p>
+                                <h4 class="material-title">{{ $elearning->title }}</h4>
+                                <div class="material-description">
+                                    {!! $elearning->description !!}
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -185,7 +57,7 @@
                             <h3 class="section-title mt-5">Course Materials</h3>
                             <div class="card">
                                 <ul id="materials-list" class="list-group list-group-flush py-3">
-                                    <p class="material-font px-2">Total Materials : {{ $totalMaterials }}</p>
+                                    <p class="material-font px-2">Total Materials: {{ $totalMaterials }}</p>
                                     <hr>
                                     @foreach ($materials as $material)
                                         <li class="list-group-item d-flex align-items-center course-item"
@@ -199,6 +71,9 @@
                                         </li>
                                     @endforeach
                                 </ul>
+                                <div class="card-footer">
+                                    <button id="back-to-elearning" class="btn btn-secondary mt-3 d-none">Elearning Detail</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -230,18 +105,46 @@
                 <!-- Reviews Section -->
                 <div class="reviews-section mt-5">
                     <h2 class="section-title">Student Reviews</h2>
-                    <div class="swiper-container">
-                        <!-- Swiper -->
-                        <div class="swiper-wrapper">
-                            @foreach ($reviews as $review)
-                                <div class="swiper-slide review-item">
-                                    <p>{!! $review->review !!}</p>
+                    <div class="review-section card shadow-sm p-4">
+                        <div class="review-list scrollable-list">
+                            @foreach ($elearning->reviews->sortByDesc('created_at') as $review)
+                                <div class="review-item mb-3">
+                                    <div class="review-rating">
+                                        <span class="text-warning">
+                                            @for ($i = 1; $i <= 5; $i++)
+                                                <i
+                                                    class="ri-star-{{ $i <= $review->rating ? 'fill' : 'line' }} ri-24px me-1"></i>
+                                            @endfor
+                                        </span>
+                                    </div>
+                                    <div class="review-text text-left">
+                                        <b>{!! $review->review !!}</b>
+                                    </div>
+                                    <div class="review-author">
+                                        <small>Reviewed by: {{ $review->reviewer->name }}</small>
+                                    </div>
                                 </div>
                             @endforeach
                         </div>
+
+                        <div class="review-form mt-4">
+                            <h4 class="form-title">Leave a Review:</h4>
+                            <form action="{{ route('student.elearnings.review.store', $elearning->id) }}" method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="rating" class="mb-3">Rating (1-5):</label>
+                                    <div class="basic-ratings"></div>
+                                    <input type="hidden" name="rating">
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="review">Review:</label>
+                                    <textarea name="review" id="review" rows="4" class="form-control" required></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary mt-3">Submit Review</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </section>
     </main>
@@ -251,49 +154,73 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const materialsList = document.getElementById('materials-list');
+            const videoPlayerContainer = document.getElementById('video-player-container');
+            const videoThumbnail = document.getElementById('video-thumbnail');
             const videoPlayer = document.getElementById('course-video');
             const materialTitle = document.querySelector('.material-title');
             const materialDescription = document.querySelector('.material-description');
+            const backToElearningBtn = document.getElementById('back-to-elearning');
+
+            const getYouTubeVideoId = (url) => {
+                const match = url.match(
+                    /(?:youtu.be\/|v\/|embed\/|watch\?v=)([^#\&\?]*).*/
+                );
+                return match ? match[1] : null;
+            };
 
             materialsList.addEventListener('click', function(e) {
                 const listItem = e.target.closest('li.course-item');
                 if (listItem) {
+                    // Remove active state from other items
                     const activeItems = materialsList.querySelectorAll('.course-item.active');
                     activeItems.forEach(item => item.classList.remove('active'));
 
+                    // Add active state to clicked item
                     listItem.classList.add('active');
 
+                    // Update video and material details
                     const newVideoSrc = listItem.getAttribute('data-video-src');
                     const newTitle = listItem.getAttribute('data-title');
                     const newDescription = listItem.getAttribute('data-description');
 
-                    videoPlayer.src = newVideoSrc;
+                    videoPlayer.src = `https://www.youtube.com/embed/${getYouTubeVideoId(newVideoSrc)}`;
                     materialTitle.textContent = newTitle;
-                    materialDescription.innerHTML =
-                        newDescription; // Gunakan innerHTML jika deskripsi berisi HTML
+                    materialDescription.innerHTML = newDescription;
+
+                    // Switch from thumbnail to video player
+                    videoThumbnail.classList.add('d-none');
+                    videoPlayerContainer.classList.remove('d-none');
+
+                    // Show back button
+                    backToElearningBtn.classList.remove('d-none');
                 }
             });
-        });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var swiper = new Swiper('.swiper-container', {
-                slidesPerView: 1,
-                spaceBetween: 10,
-                loop: true,
-                autoplay: {
-                    delay: 3000, // Waktu jeda dalam milidetik
-                    disableOnInteraction: false,
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                // Uncomment if you want navigation buttons
-                // navigation: {
-                //     nextEl: '.swiper-button-next',
-                //     prevEl: '.swiper-button-prev',
-                // },
+            // Handle back to detail button
+            backToElearningBtn.addEventListener('click', function() {
+                videoPlayerContainer.classList.add('d-none');
+                videoThumbnail.classList.remove('d-none');
+                materialTitle.textContent = "{{ $elearning->title }}";
+                materialDescription.innerHTML = `{!! $elearning->description !!}`;
+
+                // Hide back button
+                backToElearningBtn.classList.add('d-none');
+
+                // Remove active state from all items
+                const activeItems = materialsList.querySelectorAll('.course-item.active');
+                activeItems.forEach(item => item.classList.remove('active'));
             });
+
+            // Initialize ratings if present
+            if ($(".basic-ratings").length) {
+                $(".basic-ratings")
+                    .rateYo({
+                        rating: typeof ratingExists !== "undefined" ? ratingExists : 0,
+                    })
+                    .on("rateyo.set", function(e, data) {
+                        $(this).siblings('input[name="rating"]').val(data.rating);
+                    });
+            }
         });
     </script>
 @endpush
