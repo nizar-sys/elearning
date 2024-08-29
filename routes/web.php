@@ -30,7 +30,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::middleware('guest')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/about', [HomeController::class, 'about'])->name('about');
+    Route::get('/courses', [HomeController::class, 'course'])->name('course');
+    Route::get('/tutors', [HomeController::class, 'tutor'])->name('tutor');
+    Route::get('/article-list', [HomeController::class, 'article'])->name('article');
+    Route::get('/video-list', [HomeController::class, 'video'])->name('video');
+
+    Route::get('/detail-course/{courseId}', [HomeController::class, 'detailCourse'])->name('detail-course');
+    Route::get('/detail-article/{articleId}', [HomeController::class, 'detailArticle'])->name('detail-article');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
