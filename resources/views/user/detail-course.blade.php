@@ -7,6 +7,26 @@
 
 @section('content')
     <main class="main">
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1>Course</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li class="current">Course</li>
+                    </ol>
+                </div>
+            </nav>
+        </div><!-- End Page Title -->
         <section id="course-detail" class="course-detail section">
             <div class="container">
                 <!-- Course Header -->
@@ -72,7 +92,8 @@
                                     @endforeach
                                 </ul>
                                 <div class="card-footer">
-                                    <button id="back-to-elearning" class="btn btn-secondary mt-3 d-none">Elearning Detail</button>
+                                    <button id="back-to-elearning" class="btn btn-secondary mt-3 d-none">Course
+                                        Detail</button>
                                 </div>
                             </div>
                         </div>

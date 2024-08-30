@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ElearningStatus;
+use App\Models\About;
 use App\Models\Article;
+use App\Models\Banner;
 use App\Models\Category;
 use App\Models\Elearning;
 use App\Models\Material;
@@ -25,13 +28,17 @@ class HomeController extends Controller
         $teacherCounts = User::whereHas('roles', function ($query) {
             $query->where('name', 'like', '%Teacher%');
         })->count();
+        $banner = Banner::first();
+        $about = About::first();
 
-        return view('user.landing_page', compact('articleCounts', 'teacherCounts', 'elearningCounts', 'materialCounts', 'categories', 'elearnings', 'teachers'));
+        return view('user.landing_page', compact('articleCounts', 'teacherCounts', 'elearningCounts', 'materialCounts', 'categories', 'elearnings', 'teachers', 'banner', 'about'));
     }
 
     public function about()
     {
-        return view('user.about');
+        $about = About::first();
+
+        return view('user.about', compact('about'));
     }
 
     public function course()
@@ -84,5 +91,66 @@ class HomeController extends Controller
             ->get();
 
         return view('user.detail-article', compact('article', 'relatedArticles'));
+    }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('search');
+
+        $results = collect();
+
+        if ($query) {
+            $results = $results->merge(
+                Article::select('id', 'title', 'content', 'status')->status()->where('title', 'like', "%$query%")
+                    ->orWhere('content', 'like', "%$query%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'title' => $item->title,
+                        'detail' => route('detail-article', $item->id),
+                        'isFile' => false,
+                        'type' => 'Article Detail'
+                    ])
+            );
+
+            $results = $results->merge(
+                Video::select('id', 'title', 'description', 'video')->where('title', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'title' => $item->title,
+                        'detail' => $item->video,
+                        'isFile' => true,
+                        'type' => 'Video Detail'
+                    ])
+            );
+
+            $results = $results->merge(
+                Elearning::select('id', 'title', 'description', 'status')
+                    ->whereStatus(ElearningStatus::ACTIVE)
+                    ->where('title', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'title' => $item->title,
+                        'detail' => route('detail-course', $item->id),
+                        'isFile' => false,
+                        'type' => 'Course Detail'
+                    ])
+            );
+
+            $results = $results->merge(
+                Material::select('id', 'title', 'description', 'video')->where('title', 'like', "%$query%")
+                    ->orWhere('description', 'like', "%$query%")
+                    ->get()
+                    ->map(fn($item) => [
+                        'title' => $item->title,
+                        'detail' => $item->video,
+                        'isFile' => true,
+                        'type' => 'Material Detail'
+                    ])
+            );
+        }
+
+        return response()->json($results);
     }
 }

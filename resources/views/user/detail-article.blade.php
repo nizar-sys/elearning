@@ -78,6 +78,26 @@
 
 @section('content')
     <main class="main">
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="heading">
+                <div class="container">
+                    <div class="row d-flex justify-content-center text-center">
+                        <div class="col-lg-8">
+                            <h1>Article</h1>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <nav class="breadcrumbs">
+                <div class="container">
+                    <ol>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li class="current">Article</li>
+                    </ol>
+                </div>
+            </nav>
+        </div><!-- End Page Title -->
         <section id="article-detail" class="article-detail section">
             <div class="container">
                 <!-- Article Header -->

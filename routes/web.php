@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Console\AboutController;
 use App\Http\Controllers\Console\ArticleController;
+use App\Http\Controllers\Console\BannerController;
 use App\Http\Controllers\Console\BenefitController;
 use App\Http\Controllers\Console\CategoryController;
 use App\Http\Controllers\Console\ElearningController;
 use App\Http\Controllers\Console\MaterialController;
-use App\Http\Controllers\Console\PermissionController;
 use App\Http\Controllers\Console\ReviewController;
 use App\Http\Controllers\Console\RoleController;
 use App\Http\Controllers\Console\UserController;
@@ -72,6 +73,12 @@ Route::prefix('console')->middleware(['auth', 'verified', 'role:Administrator,Te
     Route::resource('materials', MaterialController::class);
     Route::resource('elearnings', ElearningController::class);
     Route::resource('reviews', ReviewController::class);
+
+    // banners
+    Route::resource('banners', BannerController::class)->only(['index', 'update']);
+
+    // about
+    Route::resource('about', AboutController::class)->only(['index', 'update']);
 });
 
 Route::prefix('student')->name('student.')->middleware(['auth', 'verified'])->group(function () {

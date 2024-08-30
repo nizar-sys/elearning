@@ -41,6 +41,38 @@
 
 <body class="index-page">
 
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Search</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Search Form -->
+                    <form method="get" action="#" class="mb-4">
+                        <input type="text" name="search" id="searchInput" class="form-control"
+                            placeholder="Search.." style="border: 1px solid #2c4666;" autocomplete="off" autofocus>
+                    </form>
+
+                    <!-- Search Results -->
+                    <div id="searchResults" class="d-none">
+                        <div class="row" id="resultsContainer">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #searchResults {
+            max-height: calc(100vh - 210px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+    </style>
+
     <header id="header" class="header d-flex align-items-center sticky-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
@@ -52,7 +84,9 @@
 
             @include('_partials.navbar-home')
 
-            <a class="btn-getstarted" href="{{ route('course') }}">Get Started</a>
+            <div class="d-none d-lg-block">
+                <a class="btn-getstarted" href="{{ route('course') }}">Get Started</a>
+            </div>
 
         </div>
     </header>
@@ -119,6 +153,59 @@
     <script src="{{ asset('/mentor') }}/assets/js/main.js"></script>
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <script src="{{ asset('/materialize') }}/assets/vendor/libs/rateyo/rateyo.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.btn-search').click(function() {
+                event.preventDefault();
+                $('#searchModal').modal('show');
+                $('#searchInput').focus();
+            });
+
+            $('#searchInput').on('keyup', function() {
+                let query = $(this).val();
+                if (query.length >= 3) {
+                    $.ajax({
+                        url: "{{ route('search.v2') }}",
+                        type: 'GET',
+                        data: {
+                            search: query
+                        },
+                        success: function(response) {
+                            let resultsContainer = $('#resultsContainer');
+                            resultsContainer.empty();
+                            if (response.length > 0) {
+                                $('#searchResults').removeClass('d-none');
+                                response.forEach(item => {
+                                    let resultHtml = `<a class="col-md-12 mb-3" ${item.isFile ? 'target="_blank"' : ''} href="${item.detail}">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${item.title}</h5>
+                                                <p class="card-text text-small"><small>${item.type}</small></p>
+                                            </div>
+                                        </div>
+                                    </a>`;
+                                    resultsContainer.append(resultHtml);
+                                });
+                            } else {
+                                resultsContainer.append(`<div class="col-md-12 mb-3">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title
+                                            ">No results found</h5>
+                                        </div>
+                                    </div>
+                                </div>`);
+
+                                $('#searchResults').removeClass('d-none');
+                            }
+                        }
+                    });
+                } else {
+                    $('#searchResults').addClass('d-none');
+                }
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 

@@ -19,7 +19,7 @@
                 <div class="container">
                     <ol>
                         <li><a href="{{ route('home') }}">Home</a></li>
-                        <li class="current">Events</li>
+                        <li class="current">Videos</li>
                     </ol>
                 </div>
             </nav>

@@ -86,6 +86,25 @@ $menuItems = [
         ]
     ],
     [
+        'header' => 'Page Settings',
+        'items' => [
+            [
+                'title' => 'Banner',
+                'icon' => 'ri-slideshow-3-line',
+                'route' => 'banners.index',
+                'active' => 'banners.*',
+                'submenu' => []
+            ],
+            [
+                'title' => 'About',
+                'icon' => 'ri-information-line',
+                'route' => 'about.index',
+                'active' => 'about.*',
+                'submenu' => [],
+            ]
+        ]
+    ],
+    [
         'header' => 'Settings',
         'items' => [
             [
