@@ -46,12 +46,12 @@
                         </div>
 
                         <div class="col-lg-6 order-2 order-lg-1 content" data-aos="fade-up" data-aos-delay="200">
-                            <h3>{{$about->title}}</h3>
+                            <h3>{{ $about->title }}</h3>
                             <div class="fst-italic">
                                 {!! str($about->description)->limit(100, '...') !!}
                             </div>
                             <br>
-                            <a href="{{ route('about', []) }}" class="read-more"><span>Read More</span><i
+                            <a href="{{ route('about-us') }}" class="read-more"><span>Read More</span><i
                                     class="bi bi-arrow-right"></i></a>
                         </div>
 

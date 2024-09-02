@@ -33,7 +33,9 @@
                             <div class="swiper-slide">
                                 <div class="card mb-3" data-aos="zoom-in" data-aos-delay="100">
                                     <div class="card-img">
-                                        <iframe width="100%" height="315" src="https://www.youtube.com/embed/{{ getYouTubeVideoId($video->video) }}" frameborder="0"
+                                        <iframe width="100%" height="315"
+                                            src="https://www.youtube.com/embed/{{ getYouTubeVideoId($video->video) }}"
+                                            frameborder="0"
                                             allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
                                             allowfullscreen>
                                         </iframe>
@@ -60,26 +62,24 @@
             </div>
         </section>
 
-        <!-- Modal -->
+        <!-- Modal HTML -->
         <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="videoModalLabel">Video Title</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <iframe width="100%" height="315" id="videoFrame" src="" frameborder="0"
-                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
-                        </iframe>
-                        <p class="mt-3" id="videoDescription"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <iframe id="videoFrame" width="100%" height="315" frameborder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                        <p id="videoDescription"></p>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- Modal -->
         <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
@@ -110,45 +110,53 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+
+            // Function to extract YouTube video ID
             const getYouTubeVideoId = (url) => {
-                const match = url.match(
-                    /(?:youtu.be\/|v\/|embed\/|watch\?v=)([^#\&\?]*).*/
-                );
+                const match = url.match(/(?:youtu.be\/|v\/|embed\/|watch\?v=)([^#\&\?]*).*/);
                 return match ? match[1] : null;
             };
 
+            // Attach click event to all video titles
             document.querySelectorAll('.video-title').forEach(function(element) {
                 element.addEventListener('click', function() {
                     var videoUrl = this.getAttribute('data-video-url');
                     var videoDescription = this.getAttribute('data-video-description');
                     var videoTitle = this.innerText;
 
-                    // Update modal content
-                    document.getElementById('videoFrame').src = `https://www.youtube.com/embed/${getYouTubeVideoId(videoUrl)}`;
+                    // Update modal content with video info
+                    var videoId = getYouTubeVideoId(videoUrl);
+                    if (videoId) {
+                        document.getElementById('videoFrame').src =
+                            `https://www.youtube.com/embed/${videoId}`;
+                    } else {
+                        document.getElementById('videoFrame').src = '';
+                    }
                     document.getElementById('videoDescription').innerHTML = videoDescription;
                     document.getElementById('videoModalLabel').innerText = videoTitle;
 
                     videoModal.show();
                 });
             });
-        });
 
-        var swiper = new Swiper('.swiper-container', {
-            slidesPerView: 1,
-            spaceBetween: 10,
-            loop: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
+            // Swiper initialization
+            var swiper = new Swiper('.swiper-container', {
+                slidesPerView: 1,
+                spaceBetween: 10,
+                loop: true,
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+            });
         });
     </script>
 @endpush

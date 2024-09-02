@@ -25,12 +25,12 @@
 .material-title {
     cursor: pointer;
     font-weight: bold;
-    color: #007bff;
+    color: #666cff;
     margin-bottom: 5px;
 }
 
 .material-title-active {
-    color: #0056b3;
+    color: #666cff;
 }
 
 .material-description {
@@ -40,7 +40,7 @@
 
 .btn-back {
     margin-top: 1rem;
-    background-color: #007bff;
+    background-color: #666cff;
     color: #fff;
     border: none;
     padding: 10px 20px;
@@ -50,7 +50,7 @@
 }
 
 .btn-back:hover {
-    background-color: #0056b3;
+    background-color: #666cff;
 }
 
 .review-section {
@@ -108,12 +108,12 @@
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #666cff;
+    border-color: #666cff;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #666cff;
     border-color: #004085;
 }
 

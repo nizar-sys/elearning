@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [HomeController::class, 'about'])->name('about');
+Route::get('/about-us', [HomeController::class, 'about'])->name('about-us');
 Route::get('/courses', [HomeController::class, 'course'])->name('course');
 Route::get('/tutors', [HomeController::class, 'tutor'])->name('tutor');
 Route::get('/article-list', [HomeController::class, 'article'])->name('article');
