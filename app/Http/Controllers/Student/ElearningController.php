@@ -34,8 +34,8 @@ class ElearningController extends Controller
         }
 
         $elearnings = $query
-        ->where('status', ElearningStatus::ACTIVE)
-        ->latest()->paginate(6);
+            ->where('status', ElearningStatus::ACTIVE)
+            ->latest()->paginate(6);
 
         $categories = Category::all();
 

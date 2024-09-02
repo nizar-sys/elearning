@@ -112,11 +112,11 @@
                 <div class="col-lg-2 col-md-3 footer-links">
                     <h4>Useful Links</h4>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">About us</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="#">Terms of service</a></li>
-                        <li><a href="#">Privacy policy</a></li>
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('about-us') }}">About us</a></li>
+                        <li><a href="{{ route('course') }}">Courses</a></li>
+                        <li><a href="{{ route('tutor') }}">Tutors</a></li>
+                        <li><a href="{{ route('video') }}">Videos</a></li>
                     </ul>
                 </div>
             </div>

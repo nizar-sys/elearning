@@ -32,6 +32,9 @@ class VideoController extends Controller
             ->addScope(new VideoScope($request))
             ->render('console.videos.index', $this->sharedData + [
                 'creators' => User::select('id', 'name')
+                    ->whereHas('roles', function ($query) {
+                        $query->whereIn('name', ['Teacher', 'Administrator']);
+                    })
                     ->when(auth()->user()->hasRole('Teacher'), function ($query) {
                         return $query->where('id', auth()->user()->id);
                     })
@@ -44,6 +47,9 @@ class VideoController extends Controller
         // Kembalikan view dengan data yang telah disiapkan
         return view('console.videos.create', $this->sharedData + [
             'creators' => User::select('id', 'name')
+                ->whereHas('roles', function ($query) {
+                    $query->whereIn('name', ['Teacher', 'Administrator']);
+                })
                 ->when(auth()->user()->hasRole('Teacher'), function ($query) {
                     return $query->where('id', auth()->user()->id);
                 })

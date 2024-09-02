@@ -36,10 +36,13 @@ class ElearningController extends Controller
             ->addScope(new ElearningScope($request))
             ->render('console.elearnings.index', $this->sharedData + [
                 'teachers' => User::select('id', 'name')
+                    ->whereHas('roles', function ($query) {
+                        $query->whereIn('name', ['Teacher', 'Administrator']);
+                    })
                     ->when(auth()->user()->hasRole('Teacher'), function ($query) {
                         return $query->where('id', auth()->user()->id);
                     })
-                    ->get()
+                    ->get(),
             ]);
     }
 
@@ -47,10 +50,13 @@ class ElearningController extends Controller
     {
         return view('console.elearnings.create', $this->sharedData + [
             'teachers' => User::select('id', 'name')
+                ->whereHas('roles', function ($query) {
+                    $query->whereIn('name', ['Teacher', 'Administrator']);
+                })
                 ->when(auth()->user()->hasRole('Teacher'), function ($query) {
                     return $query->where('id', auth()->user()->id);
                 })
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -86,10 +92,13 @@ class ElearningController extends Controller
 
         return view('console.elearnings.edit', array_merge(['elearning' => $elearning], $this->sharedData + [
             'teachers' => User::select('id', 'name')
+                ->whereHas('roles', function ($query) {
+                    $query->whereIn('name', ['Teacher', 'Administrator']);
+                })
                 ->when(auth()->user()->hasRole('Teacher'), function ($query) {
                     return $query->where('id', auth()->user()->id);
                 })
-                ->get()
+                ->get(),
         ]));
     }
 

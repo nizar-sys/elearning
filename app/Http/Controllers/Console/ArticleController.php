@@ -20,7 +20,12 @@ class ArticleController extends Controller
     public function index(Request $request, ArticleDataTable $dataTable)
     {
         $categories = Category::select('id', 'name')->get();
-        $creators = User::select('id', 'name')->get();
+        $creators = User::select('id', 'name')
+            ->whereHas('roles', function ($query) {
+                $query->whereIn('name', ['Teacher', 'Administrator']);
+            })
+            ->get();
+
         $articleStatus = ArticleStatus::getValues();
 
         return $dataTable
@@ -31,11 +36,14 @@ class ArticleController extends Controller
     public function create()
     {
         $categories = Category::select('id', 'name')->get();
-        $creators = User::select('id', 'name')
-        ->when(Auth::user()->hasRole('Teacher'), function ($query) {
-            return $query->where('id', Auth::id());
+        $creators = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', ['Teacher', 'Administrator']);
         })
-        ->get();
+            ->select('id', 'name')
+            ->when(Auth::user()->hasRole('Teacher'), function ($query) {
+                return $query->where('id', Auth::id());
+            })
+            ->get();
         $articleStatus = ArticleStatus::getValues();
 
         return view('console.articles.create', compact('categories', 'creators', 'articleStatus'));
@@ -69,11 +77,14 @@ class ArticleController extends Controller
     public function edit(Article $article)
     {
         $categories = Category::select('id', 'name')->get();
-        $creators = User::select('id', 'name')
-        ->when(Auth::user()->hasRole('Teacher'), function ($query) {
-            return $query->where('id', Auth::id());
+        $creators = User::whereHas('roles', function ($query) {
+            $query->whereIn('name', ['Teacher', 'Administrator']);
         })
-        ->get();
+            ->select('id', 'name')
+            ->when(Auth::user()->hasRole('Teacher'), function ($query) {
+                return $query->where('id', Auth::id());
+            })
+            ->get();
         $articleStatus = ArticleStatus::getValues();
 
         return view('console.articles.edit', compact('article', 'categories', 'creators', 'articleStatus'));

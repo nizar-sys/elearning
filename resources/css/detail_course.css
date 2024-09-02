@@ -4,7 +4,7 @@
 
 .course-item:hover,
 .course-item.active {
-    background-color: #8B93FF;
+    background-color: #8b93ff;
     color: #fff;
 }
 
@@ -23,7 +23,7 @@
     padding: 5px 15px;
     margin: 5px;
     border-radius: 20px;
-    background-color: #8B93FF;
+    background-color: #8b93ff;
     color: white;
     font-size: 14px;
     text-align: center;
@@ -40,7 +40,7 @@
     width: 80px;
     height: 80px;
     object-fit: cover;
-    border: 3px solid #007bff;
+    border: 3px solid #666cff;
 }
 
 .teacher-name {
@@ -132,12 +132,12 @@
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: #666cff;
+    border-color: #666cff;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background-color: #666cff;
     border-color: #004085;
 }
 
@@ -193,14 +193,14 @@
     content: "\2605";
 }
 
-.basic-ratings input:checked~label {
+.basic-ratings input:checked ~ label {
     color: #ffd700;
 }
 
-.basic-ratings input:checked~label~input:checked~label {
+.basic-ratings input:checked ~ label ~ input:checked ~ label {
     color: #ffd700;
 }
 
-.basic-ratings input:focus~label {
+.basic-ratings input:focus ~ label {
     color: #ffeb3b;
 }

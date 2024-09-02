@@ -92,8 +92,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 rtl: isRtl,
                 rating: typeof ratingExists !== "undefined" ? ratingExists : 0,
             })
-            .on("rateyo.set", (e, data) => {
-                $(this).siblings('input[name="rating"]').val(data.rating);
+            .on("rateyo.set", function (e, data) {
+                $(this).parent().find('input[name="rating"]').val(data.rating);
             });
     }
 });
